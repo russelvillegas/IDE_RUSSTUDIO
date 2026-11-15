@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RusStudio — Apple-style compiler workbench</title>
+<style>
+:root{--canvas:#f5f5f7;--surface:#fff;--surface2:#f2f2f7;--line:#d8d8dd;--line2:#e7e7eb;--ink:#1d1d1f;--secondary:#6e6e73;--tertiary:#98989d;--accent:#1d1d1f;--accentSoft:#e8e8ed;--green:#3a3a3c;--shadow:0 18px 50px rgba(0,0,0,.10);--tap:#1d1d1f;--tapText:#fff}
+*{box-sizing:border-box}html,body{margin:0;min-width:1180px;background:#dedee1;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}body{padding:42px}.window{max-width:1440px;min-height:900px;margin:auto;background:var(--canvas);border:1px solid #c6c6ca;border-radius:15px;overflow:hidden;box-shadow:var(--shadow)}
+.titlebar{height:54px;background:rgba(255,255,255,.86);border-bottom:1px solid var(--line);display:flex;align-items:center;position:relative;padding:0 20px}.traffic{display:flex;gap:8px}.traffic i{display:block;width:12px;height:12px;border-radius:50%;background:#d0d0d2;border:1px solid #bdbdc0}.traffic i:nth-child(1){background:#ff5f57;border-color:#e0443e}.traffic i:nth-child(2){background:#febc2e;border-color:#dda51f}.traffic i:nth-child(3){background:#28c840;border-color:#16a42d}.window-title{position:absolute;left:50%;transform:translateX(-50%);font-size:13px;font-weight:600;color:var(--secondary)}.toolbar{height:76px;background:rgba(255,255,255,.78);display:flex;align-items:center;gap:18px;padding:0 28px;border-bottom:1px solid var(--line2)}.app-title{font-size:20px;font-weight:650;letter-spacing:-.02em}.toolbar-sub{font-size:13px;color:var(--secondary);padding-left:17px;border-left:1px solid var(--line)}.toolbar-spacer{flex:1}.pill{height:32px;border-radius:17px;background:var(--surface2);border:1px solid var(--line);display:flex;align-items:center;padding:0 12px;gap:7px;color:var(--secondary);font-size:12px}.dot{width:7px;height:7px;border-radius:50%;background:#4a4a4c}.button{height:36px;padding:0 17px;border-radius:9px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:13px;font-weight:600;letter-spacing:-.01em;box-shadow:0 1px 2px rgba(0,0,0,.04)}.button.primary{background:var(--ink);border-color:var(--ink);color:var(--canvas);box-shadow:none}.button.build-button{min-width:112px;background:var(--surface2);color:var(--ink);border-color:var(--line)}.body{display:grid;grid-template-columns:224px 1fr;min-height:770px}.sidebar{background:#f0f0f2;border-right:1px solid var(--line);padding:26px 14px}.side-label{font-size:11px;color:var(--tertiary);font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:0 12px 10px}.nav{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;color:var(--secondary);font-size:14px;margin-bottom:3px}.nav.active{background:#dedee3;color:var(--ink);font-weight:600}.nav .symbol{width:18px;text-align:center;font-size:15px}.side-file{margin-top:28px;border-top:1px solid var(--line);padding-top:20px;color:var(--secondary);font-size:12px}.side-file b{display:block;color:var(--ink);font-weight:500;font-size:13px;margin-top:8px}.main{padding:38px 42px 48px;background:var(--canvas)}.eyebrow{color:var(--secondary);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}.main-heading{font-size:30px;letter-spacing:-.035em;font-weight:650;margin:8px 0 8px}.main-sub{font-size:15px;color:var(--secondary);margin-bottom:28px}.segmented{display:inline-flex;background:#e5e5ea;border-radius:9px;padding:2px;margin-bottom:26px}.segment{font:inherit;font-size:12px;color:var(--secondary);padding:7px 14px;border-radius:7px}.segment.active{background:#fff;color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.12);font-weight:600}.grid-top{display:grid;grid-template-columns:1fr 1.35fr;gap:20px}.card{background:var(--surface);border:1px solid var(--line2);border-radius:14px;padding:23px;box-shadow:0 4px 16px rgba(0,0,0,.035)}.card-heading{display:flex;justify-content:space-between;align-items:center;font-size:16px;font-weight:600;letter-spacing:-.015em;margin-bottom:5px}.card-caption{color:var(--secondary);font-size:12px;margin-bottom:22px}.subtle{color:var(--secondary);font-size:12px}.tap-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:23px}.metric-label{font-size:11px;color:var(--tertiary);text-transform:uppercase;letter-spacing:.06em}.metric{font-size:25px;letter-spacing:-.04em;margin-top:5px}.meter{height:8px;border-radius:5px;background:#ededf0;position:relative;margin:8px 0 6px}.meter:before{content:"";position:absolute;width:33%;height:100%;border-radius:5px;background:#1d1d1f}.meter:after{content:"";position:absolute;left:44%;top:-4px;height:16px;border-left:1px solid #77777b}.meter-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--tertiary)}.morse-box{border:1px solid var(--line);border-radius:10px;padding:16px;background:#fbfbfd}.morse{font-family:"SF Mono",ui-monospace,Menlo,monospace;letter-spacing:10px;font-size:20px}.morse-note{font-size:12px;color:var(--secondary);margin-top:9px}.morse-note b{color:var(--ink);font-weight:500}.token-table{width:100%;border-collapse:collapse;font-size:13px}.token-table th{text-align:left;color:var(--tertiary);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;padding:0 10px 11px}.token-table td{border-top:1px solid var(--line2);padding:12px 10px}.token-table tr.active{background:#f0f0f3}.token-table tr.active td:first-child{border-left:3px solid #1d1d1f}.state{color:var(--secondary);font-size:12px}.state b{color:var(--ink);font-weight:600}.runtime{margin-top:20px}.runtime-grid{display:grid;grid-template-columns:1.25fr 1fr 1.1fr;gap:20px}.console{height:142px;background:#fafafd;border:1px solid var(--line);border-radius:10px;padding:15px;font-family:"SF Mono",ui-monospace,Menlo,monospace;font-size:12px;line-height:1.8;color:var(--ink);white-space:pre-line}.kv{display:grid;grid-template-columns:1fr auto;row-gap:13px;font-size:13px;border:1px solid var(--line2);border-radius:10px;padding:16px}.kv span:nth-child(odd){color:var(--secondary)}.kv span:nth-child(even){font-family:"SF Mono",ui-monospace,Menlo,monospace}.tape{display:flex;gap:5px;border:1px solid var(--line2);border-radius:10px;padding:13px;overflow:hidden}.cell{flex:1;min-width:38px;height:51px;border:1px solid var(--line);border-radius:7px;text-align:center;padding-top:8px;color:var(--secondary);font-family:"SF Mono",ui-monospace,Menlo,monospace;font-size:10px;line-height:1.6}.cell.active{background:#1d1d1f;border-color:#1d1d1f;color:#fff}.diagnostic{margin-top:20px;display:flex;align-items:center;gap:14px;padding:13px 16px;background:#fbfbfd;border:1px solid var(--line2);border-radius:10px;font-size:12px;color:var(--secondary)}.diagnostic b{color:var(--ink);font-weight:600}.footer-note{margin-top:22px;color:var(--tertiary);font-size:11px}
+</style>
+
+<style>
+@media (max-width: 800px){
+  html,body{min-width:0} body{padding:0;background:var(--canvas)}
+  .window{width:100%;min-height:100vh;border:0;border-radius:0;box-shadow:none}
+  .titlebar{height:48px;padding:0 16px}.window-title{font-size:12px}
+  .toolbar{height:auto;min-height:72px;padding:14px 16px;gap:10px;flex-wrap:wrap}
+  .app-title{font-size:18px}.toolbar-sub{display:none}.toolbar-spacer{display:none}
+  .toolbar .pill{margin-left:auto}.button{min-height:42px;padding:0 14px}
+  .body{display:block;min-height:0}.sidebar{display:none}
+  .main{padding:24px 16px 34px}.main-heading{font-size:28px}.main-sub{line-height:1.45;margin-bottom:22px}
+  .segmented{width:100%;margin-bottom:18px}.segment{flex:1;text-align:center;min-height:38px;padding-top:10px}
+  .grid-top{grid-template-columns:1fr;gap:14px}.card{padding:18px;border-radius:12px}
+  .runtime-grid{grid-template-columns:1fr;gap:14px}.runtime{margin-top:14px}
+  .token-table{font-size:12px}.token-table th,.token-table td{padding:11px 7px}
+  .diagnostic{align-items:flex-start;flex-wrap:wrap;line-height:1.4}.footer-note{margin-top:16px}
+}
+</style>
+
+<style>
+.appearance{height:36px;border:1px solid var(--line);background:var(--surface2);border-radius:18px;padding:0 13px;display:flex;align-items:center;gap:7px;color:var(--ink);font:inherit;font-size:12px;font-weight:600}.appearance-icon{font-size:15px;line-height:1}.appearance:active{transform:scale(.97)}
+.tap-button{width:100%;min-height:58px;margin-top:16px;border:1px solid var(--line);border-radius:12px;background:var(--tap);color:var(--tapText);display:flex;align-items:center;justify-content:center;gap:11px;font:inherit;touch-action:none;user-select:none;-webkit-user-select:none;cursor:pointer}.tap-button b{display:block;font-size:14px}.tap-button small{display:block;color:#c7c7cc;font-size:11px;margin-top:3px}.tap-key-icon{font-size:24px}.tap-button.is-down{transform:scale(.985);box-shadow:0 0 0 3px #d1d1d6}.tap-feedback{font-size:11px;color:var(--tertiary);margin-top:9px;text-align:center;min-height:16px}
+body.dark{--canvas:#1c1c1e;--surface:#2c2c2e;--surface2:#3a3a3c;--line:#48484a;--line2:#38383a;--ink:#f5f5f7;--secondary:#b8b8bd;--tertiary:#8e8e93;--accentSoft:#48484a;--tap:#f5f5f7;--tapText:#1d1d1f;--shadow:0 18px 50px rgba(0,0,0,.30);background:#111113;color:var(--ink)}body.dark .titlebar,body.dark .toolbar{background:rgba(28,28,30,.96)}body.dark .button{background:#3a3a3c;color:#f5f5f7;border-color:#545458}body.dark .button.primary{background:#f5f5f7;color:#1d1d1f;border-color:#f5f5f7}body.dark .button.build-button{background:#5a5a5f;color:#fff;border-color:#74747a}body.dark .appearance{background:#3a3a3c;color:#f5f5f7;border-color:#545458}body.dark .pill{background:#3a3a3c;color:#f5f5f7;border-color:#545458}body.dark .sidebar{background:#242426}body.dark .nav.active{background:#48484a;color:#fff}body.dark .toolbar-sub{color:#b8b8bd}body.dark .morse-box,body.dark .console,body.dark .kv,body.dark .diagnostic{background:#242426}body.dark .console{color:#f5f5f7}body.dark .token-table tr.active{background:#3a3a3c}body.dark .segmented{background:#3a3a3c}body.dark .segment.active{background:#636366;color:#fff}body.dark .meter{background:#48484a}body.dark .meter:before{background:#f5f5f7}body.dark .tap-button small{color:#6e6e73}
+@media (max-width:800px){.appearance{min-height:42px}.tap-button{min-height:68px}.tap-key-icon{font-size:28px}}
+</style>
+
+<style>
+.feedback-options{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;color:var(--secondary);font-size:11px;margin-top:13px}.feedback-options label{display:inline-flex;align-items:center;gap:5px;cursor:pointer}.feedback-options input{accent-color:var(--ink);width:14px;height:14px}.tap-button.haptic-flash{box-shadow:0 0 0 4px var(--line),0 0 0 7px var(--accentSoft);transition:box-shadow 80ms ease}
+</style>
+
+<style>
+.workspace-view{margin-bottom:20px}.workspace-view[hidden]{display:none}.workspace-view .view-card{background:var(--surface);border:1px solid var(--line2);border-radius:14px;padding:24px;box-shadow:0 4px 16px rgba(0,0,0,.035)}.workspace-view h2{font-size:18px;margin:0 0 6px}.workspace-view p{color:var(--secondary);font-size:13px;margin:0 0 20px}.workspace-view table{width:100%;border-collapse:collapse;font-size:13px}.workspace-view th{text-align:left;color:var(--tertiary);font-size:11px;text-transform:uppercase;letter-spacing:.06em;padding:0 10px 12px}.workspace-view td{border-top:1px solid var(--line2);padding:13px 10px}.workspace-view .view-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.workspace-view .stat{border:1px solid var(--line2);border-radius:10px;padding:16px}.workspace-view .stat b{display:block;font-size:22px;margin-top:6px}.workspace-view .diag-row{display:flex;gap:14px;align-items:center;border-top:1px solid var(--line2);padding:14px 0;font-size:13px}.workspace-view .diag-badge{font-weight:700;font-size:11px;padding:5px 8px;border-radius:6px;background:var(--accentSoft);color:var(--ink)}body.dark .workspace-view .view-card{box-shadow:none}body.dark .workspace-view .stat{background:#242426}
+@media(max-width:800px){.workspace-view .view-grid{grid-template-columns:1fr}.workspace-view .view-card{padding:18px}.workspace-view table{font-size:12px}}
+</style>
+</head>
+<body><main class="window">
+<header class="titlebar"><div class="traffic"><i></i><i></i><i></i></div><div class="window-title">untitled.rus — RusStudio</div></header>
+<header class="toolbar"><div class="app-title">RusStudio</div><div class="toolbar-sub">Morse Compiler</div><div class="toolbar-spacer"></div><div class="pill"><span class="dot"></span>Listening</div><button class="button build-button" aria-label="Build program">Build program</button><button class="button primary" aria-label="Run program">Run</button><button class="appearance" id="theme-toggle" role="switch" aria-checked="false"><span class="appearance-icon">☾</span><span class="appearance-label">Dark</span></button></header>
+<div class="body"><aside class="sidebar"><div class="side-label">Workspace</div><div class="nav active"><span class="symbol">⌘</span>Workbench</div><div class="nav"><span class="symbol">≡</span>Token Trace</div><div class="nav"><span class="symbol">▣</span>Memory Tape</div><div class="nav"><span class="symbol">⌁</span>Diagnostics</div><div class="side-file"><span>Current program</span><b>untitled.rus</b><span style="display:block;margin-top:6px">RUS-VM · 8 opcodes</span></div></aside>
+<main class="main"><div class="eyebrow">Real-time compiler</div><h1 class="main-heading">Compiler Workbench</h1><div class="main-sub">Write with the Spacebar. Watch Morse become executable instructions.</div><div class="segmented"><div class="segment active">Live</div><div class="segment">Trace</div><div class="segment">Memory</div></div>
+<section id="workspace-view" class="workspace-view" hidden></section>
+<section class="grid-top"><article class="card"><div class="card-heading">Input Buffer <span class="subtle">Spacebar</span></div><div class="card-caption">Telegraph keyer is ready for input.</div><div class="tap-grid"><div><div class="metric-label">Current tap</div><div class="metric">·</div></div><div><div class="metric-label">Hold duration</div><div class="metric">137 ms</div></div></div><div class="metric-label">Signal timing</div><div class="meter"></div><div class="meter-labels"><span>DOT</span><span>DASH</span><span>PAUSE</span></div><div style="height:22px"></div><div class="morse-box"><div class="morse">· · – ·</div><div class="morse-note">Morse token <b id="morse-token">.-..</b> &nbsp;→&nbsp; <b id="decoded-opcode">OUTPUT</b></div></div><button class="tap-button" id="telegraph-key" aria-label="Hold to send Morse signal"><span class="tap-key-icon">●</span><span><b>Tap to send</b><small>Hold for dot or dash</small></span></button><div class="tap-feedback" id="tap-feedback">Ready for touch input</div><div class="feedback-options"><label><input type="checkbox" id="sidetone-toggle" checked> 650Hz sidetone</label><label><input type="checkbox" id="haptic-toggle" checked> Haptic simulation</label></div></article>
+<article class="card"><div class="card-heading">Token Stream <span class="subtle">8 emitted</span></div><div class="card-caption">Intermediate representation generated by the decoder.</div><table class="token-table"><thead><tr><th>Morse</th><th>Opcode</th><th>State</th></tr></thead><tbody><tr><td>.</td><td>INC</td><td class="state"><b>Done</b></td></tr><tr><td>..</td><td>MOVE_RIGHT</td><td class="state"><b>Done</b></td></tr><tr class="active"><td>.-</td><td>LOOP_BEGIN</td><td class="state"><b>Active</b></td></tr><tr><td>...</td><td>OUTPUT</td><td class="state">Queued</td></tr><tr><td>-</td><td>DEC</td><td class="state">Queued</td></tr></tbody></table><div class="footer-note">3 more instructions in trace view</div></article></section>
+<section class="card runtime"><div class="card-heading">Runtime <span class="subtle">RUS-VM</span></div><div class="card-caption">Program output and execution state.</div><div class="runtime-grid"><div><div class="metric-label" style="margin-bottom:10px">Program output</div><div class="console">&gt; rus-vm --execute untitled.rus
+&gt; status: running
+
+Hello, RusStudio!</div></div><div><div class="metric-label" style="margin-bottom:10px">VM state</div><div class="kv"><span>Pointer</span><span>0042</span><span>Current cell</span><span>000</span><span>Cycles</span><span>000184</span><span>Current IR</span><span>OUTPUT</span></div></div><div><div class="metric-label" style="margin-bottom:10px">Memory tape</div><div class="tape"><div class="cell">38<br>0</div><div class="cell">39<br>0</div><div class="cell">40<br>0</div><div class="cell">41<br>0</div><div class="cell active">42<br>0</div><div class="cell">43<br>0</div><div class="cell">44<br>0</div></div><div class="subtle" style="margin-top:12px">30,000 byte cells</div></div></div></section>
+<div class="diagnostic"><b>Ready to execute</b><span>Compilation unit is valid</span><span>·</span><span>650Hz sidetone enabled</span><span>·</span><span>Pause threshold 450ms</span></div>
+</main></div></main>
+<script>
+(function(){
+  const buttons=[...document.querySelectorAll('.button')];
+  const pill=document.querySelector('.pill');
+  const diagnostic=document.querySelector('.diagnostic');
+  const diagnosticText=diagnostic?.querySelector('span');
+  const segments=[...document.querySelectorAll('.segment')];
+  const nav=[...document.querySelectorAll('.nav')];
+  const tableRows=[...document.querySelectorAll('.token-table tbody tr')];
+  let running=false;
+
+  function setStatus(label, message){
+    if(pill) pill.innerHTML='<span class="dot"></span>'+label;
+    if(diagnosticText) diagnosticText.textContent=message;
+  }
+  buttons.forEach(button=>button.addEventListener('click',()=>{
+    const action=button.textContent.trim().toLowerCase();
+    if(action==='run'){
+      running=!running; button.textContent=running?'Stop':'Run';
+      button.classList.toggle('primary', running);
+      setStatus(running?'Running':'Listening', running?'Virtual machine is executing the token stream.':'Execution paused; keyer remains ready.');
+    } else if(action.startsWith('build')){
+      setStatus('Ready','Compilation completed successfully.');
+      button.animate([{transform:'scale(1)'},{transform:'scale(.96)'},{transform:'scale(1)'}],{duration:180});
+    }
+  }));
+  segments.forEach(segment=>segment.addEventListener('click',()=>{
+    segments.forEach(x=>x.classList.remove('active')); segment.classList.add('active');
+    const mode=segment.textContent.trim();
+    setStatus(mode==='Live'?'Listening':'Ready', mode==='Live'?'Telegraph keyer is ready for input.':mode+' view selected.');
+  }));
+  nav.forEach(item=>item.addEventListener('click',()=>{
+    nav.forEach(x=>x.classList.remove('active')); item.classList.add('active');
+    setStatus('Ready', item.textContent.trim()+' selected.');
+    document.querySelector('.main')?.scrollIntoView({behavior:'smooth',block:'start'});
+  }));
+  tableRows.forEach(row=>row.addEventListener('click',()=>{
+    tableRows.forEach(x=>x.classList.remove('active')); row.classList.add('active');
+    setStatus('Ready','Selected opcode: '+row.children[1].textContent.trim()+'.');
+  }));
+})();
+</script>
+
+<script>
+(function(){
+  const key=document.getElementById('telegraph-key');
+  const feedback=document.getElementById('tap-feedback');
+  const token=document.getElementById('morse-token');
+  const opcode=document.getElementById('decoded-opcode');
+  const theme=document.getElementById('theme-toggle');
+  const icon=theme?.querySelector('.appearance-icon');
+  const label=theme?.querySelector('.appearance-label');
+  let downAt=0, current=''; let pauseTimer;
+  const decode={'.':'INC','-':'DEC','..':'MOVE_RIGHT','--':'MOVE_LEFT','.-':'LOOP_BEGIN','-.':'LOOP_END','...':'OUTPUT','---':'INPUT'};
+  function setFeedback(text){if(feedback) feedback.textContent=text}
+  function press(){
+    if(downAt) return; downAt=performance.now(); key.classList.add('is-down'); setFeedback('Listening… release to commit signal');
+  }
+  function release(){
+    if(!downAt) return; const duration=performance.now()-downAt; downAt=0; key.classList.remove('is-down');
+    const signal=duration<200?'.':'-'; current+=signal; token.textContent=current;
+    setFeedback((signal==='.'?'DOT':'DASH')+' · '+Math.round(duration)+' ms');
+    clearTimeout(pauseTimer); pauseTimer=setTimeout(()=>{
+      const name=decode[current]||'UNKNOWN'; opcode.textContent=name;
+      setFeedback(current+' decoded as '+name); current='';
+    },450);
+  }
+  if(key){
+    key.addEventListener('pointerdown',e=>{e.preventDefault();key.setPointerCapture?.(e.pointerId);press()});
+    key.addEventListener('pointerup',e=>{e.preventDefault();release()});
+    key.addEventListener('pointercancel',release);
+    key.addEventListener('contextmenu',e=>e.preventDefault());
+  }
+  if(theme){
+    theme.addEventListener('click',()=>{
+      const dark=document.body.classList.toggle('dark'); theme.setAttribute('aria-checked',dark?'true':'false');
+      if(icon) icon.textContent=dark?'☀':'☾'; if(label) label.textContent=dark?'Light':'Dark';
+      try{localStorage.setItem('russtudio-theme',dark?'dark':'light')}catch(e){}
+    });
+    try{if(localStorage.getItem('russtudio-theme')==='dark') theme.click()}catch(e){}
+  }
+})();
+</script>
+
+<script>
+(function(){
+  const key=document.getElementById('telegraph-key');
+  const sidetone=document.getElementById('sidetone-toggle');
+  const haptic=document.getElementById('haptic-toggle');
+  let audioContext=null, oscillator=null, gain=null;
+  function audioStart(){
+    if(!sidetone?.checked) return;
+    try{
+      audioContext ||= new (window.AudioContext||window.webkitAudioContext)();
+      if(audioContext.state==='suspended') audioContext.resume();
+      oscillator=audioContext.createOscillator(); gain=audioContext.createGain();
+      oscillator.type='sine'; oscillator.frequency.value=650; gain.gain.setValueAtTime(0.0001,audioContext.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.045,audioContext.currentTime+0.025);
+      oscillator.connect(gain).connect(audioContext.destination); oscillator.start();
+    }catch(e){}
+  }
+  function audioStop(){
+    if(!oscillator||!gain||!audioContext) return;
+    try{const now=audioContext.currentTime; gain.gain.cancelScheduledValues(now); gain.gain.setValueAtTime(Math.max(gain.gain.value,0.0001),now); gain.gain.exponentialRampToValueAtTime(0.0001,now+0.035); oscillator.stop(now+0.04)}catch(e){}
+    oscillator=null; gain=null;
+  }
+  function pulse(pattern){
+    if(!haptic?.checked) return;
+    try{if(navigator.vibrate) navigator.vibrate(pattern)}catch(e){}
+    key?.classList.remove('haptic-flash'); void key?.offsetWidth; key?.classList.add('haptic-flash');
+    setTimeout(()=>key?.classList.remove('haptic-flash'),150);
+  }
+  key?.addEventListener('pointerdown',()=>{audioStart();pulse(12)});
+  key?.addEventListener('pointerup',()=>{audioStop();pulse([22,12,16])});
+  key?.addEventListener('pointercancel',audioStop);
+})();
+</script>
+
+<script>
+(function(){
+  const host=document.getElementById('workspace-view');
+  const home=[...document.querySelectorAll('.grid-top,.runtime,.diagnostic')];
+  const nav=[...document.querySelectorAll('.nav')];
+  const segments=[...document.querySelectorAll('.segment')];
+  if(!host) return;
+  const views={
+    Workbench:{title:'Compiler Workbench',desc:'Write with the Spacebar. Watch Morse become executable instructions.',html:''},
+    'Token Trace':{title:'Token Trace',desc:'Follow each Morse token from input through decoding and VM execution.',html:`<div class="view-card"><h2>Execution trace</h2><p>Live intermediate representation and runtime progression.</p><table><thead><tr><th>Cycle</th><th>Morse</th><th>Opcode</th><th>Cell</th><th>Result</th></tr></thead><tbody><tr><td>0181</td><td>.</td><td>INC</td><td>0041</td><td>Done</td></tr><tr><td>0182</td><td>..</td><td>MOVE_RIGHT</td><td>0042</td><td>Done</td></tr><tr style="background:var(--accentSoft)"><td>0184</td><td>.-</td><td><b>LOOP_BEGIN</b></td><td>0042</td><td><b>Active</b></td></tr><tr><td>0185</td><td>...</td><td>OUTPUT</td><td>0042</td><td>Queued</td></tr></tbody></table></div>`},
+    'Memory Tape':{title:'Memory Tape',desc:'Inspect the 30,000-byte VM tape and the current pointer position.',html:`<div class="view-card"><h2>RUS-VM memory</h2><p>Current pointer is highlighted in black.</p><div class="view-grid"><div class="stat"><span class="metric-label">Pointer</span><b>0042</b></div><div class="stat"><span class="metric-label">Current cell</span><b>000</b></div><div class="stat"><span class="metric-label">Tape size</span><b>30,000</b></div></div><div class="tape" style="margin-top:18px"><div class="cell">0038<br>0</div><div class="cell">0039<br>0</div><div class="cell">0040<br>0</div><div class="cell">0041<br>0</div><div class="cell active">0042<br>0</div><div class="cell">0043<br>0</div><div class="cell">0044<br>0</div><div class="cell">0045<br>0</div></div></div>`},
+    Diagnostics:{title:'Diagnostics',desc:'Compiler, keyer, and runtime health information.',html:`<div class="view-card"><h2>System diagnostics</h2><p>All compiler services are available.</p><div class="diag-row"><span class="diag-badge">READY</span><span>Compilation unit is valid and ready to execute.</span></div><div class="diag-row"><span class="diag-badge">KEYER</span><span>Dot threshold 200ms · command pause 450ms · sidetone 650Hz.</span></div><div class="diag-row"><span class="diag-badge">RUS-VM</span><span>30,000-byte tape initialized · pointer 0042 · cycle 000184.</span></div></div>`}
+  };
+  function show(name){
+    const view=views[name]||views.Workbench;
+    nav.forEach(x=>x.classList.toggle('active',x.textContent.includes(name)));
+    segments.forEach(x=>x.classList.toggle('active',(name==='Workbench'&&x.textContent.trim()==='Live')||(name==='Token Trace'&&x.textContent.trim()==='Trace')||(name==='Memory Tape'&&x.textContent.trim()==='Memory')));
+    if(name==='Workbench'){host.hidden=true;home.forEach(x=>x.style.display='');return}
+    home.forEach(x=>x.style.display='none'); host.hidden=false; host.innerHTML='<div class="view-card"><h2>'+view.title+'</h2><p>'+view.desc+'</p></div>'+view.html;
+  }
+  nav.forEach(item=>item.addEventListener('click',()=>{const text=item.textContent;show(text.includes('Token')?'Token Trace':text.includes('Memory')?'Memory Tape':text.includes('Diagnostics')?'Diagnostics':'Workbench')}));
+  segments.forEach(item=>item.addEventListener('click',()=>{const text=item.textContent.trim();show(text==='Trace'?'Token Trace':text==='Memory'?'Memory Tape':'Workbench')}));
+  show('Workbench');
+})();
+</script>
+</body></html>
